@@ -191,17 +191,20 @@ pip install -r requirements.txt
 
 ### Step 3 — Configure environment
 
-Copy `.env.example` to `.env` and add your keys.
+Copy `.env.example` to `.env` and replace the placeholder values with your keys. Gemini is the default provider (`LLM_PROVIDER=gemini`), so configure `GEMINI_API_KEY`. To use OpenAI instead, set `LLM_PROVIDER=openai` and configure `OPENAI_API_KEY`. The corresponding model settings are `GEMINI_MODEL` and `OPENAI_MODEL`. In production, set `APP_ENV=production` and replace `ADMIN_API_KEY` with a unique secret; startup rejects an empty or example/default admin key. Keep your real `.env` file private; never commit API keys.
 
 ```env
+LLM_PROVIDER=gemini
+GEMINI_API_KEY=your_gemini_api_key_here
 OPENAI_API_KEY=your_openai_api_key_here
 TAVILY_API_KEY=your_tavily_api_key_here
 PINECONE_API_KEY=your_pinecone_api_key_here
 PINECONE_INDEX_NAME=fde-hr-policy-rag
 PINECONE_NAMESPACE=company-hr-kb
+EMBEDDING_MODEL=text-embedding-004
+GEMINI_MODEL=gemini-3.8-flash
 OPENAI_MODEL=gpt-4o-mini
-EMBEDDING_MODEL=text-embedding-3-small
-ADMIN_API_KEY=change-me-in-production
+ADMIN_API_KEY=replace_with_a_long_random_secret
 APP_ENV=development
 ```
 
