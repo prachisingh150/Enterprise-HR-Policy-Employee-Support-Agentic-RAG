@@ -78,11 +78,20 @@ def ensure_index():
         current_dimension = getattr(index_info, "dimension", None)
         if current_dimension is None and isinstance(index_info, dict):
             current_dimension = index_info.get("dimension")
-        if current_dimension is not None and current_dimension != desired_dimension:
-            pc.delete_index(name=settings.pinecone_index_name)
-            while settings.pinecone_index_name in [x["name"] for x in pc.list_indexes()]:
-                time.sleep(1)
-    if settings.pinecone_index_name not in [x["name"] for x in pc.list_indexes()]:
+        if current_dimension is None:
+            raise RuntimeError(
+                f"Unable to determine the dimension of Pinecone index "
+                f"'{settings.pinecone_index_name}'. The index was not modified."
+            )
+        if current_dimension != desired_dimension:
+            raise RuntimeError(
+                f"Pinecone index '{settings.pinecone_index_name}' has dimension "
+                f"{current_dimension}, but embedding model '{settings.embedding_model}' "
+                f"requires dimension {desired_dimension}. The index was not modified. "
+                "Configure a compatible embedding model or create a new index and migrate "
+                "your documents manually."
+            )
+    else:
         pc.create_index(
             name=settings.pinecone_index_name,
             dimension=desired_dimension,

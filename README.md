@@ -191,7 +191,9 @@ pip install -r requirements.txt
 
 ### Step 3 — Configure environment
 
-Copy `.env.example` to `.env` and replace the placeholder values with your keys. Gemini is the default provider (`LLM_PROVIDER=gemini`), so configure `GEMINI_API_KEY`. To use OpenAI instead, set `LLM_PROVIDER=openai` and configure `OPENAI_API_KEY`. The corresponding model settings are `GEMINI_MODEL` and `OPENAI_MODEL`. In production, set `APP_ENV=production` and replace `ADMIN_API_KEY` with a unique secret; startup rejects an empty or example/default admin key. Keep your real `.env` file private; never commit API keys.
+Copy `.env.example` to `.env` and replace the placeholder values with your keys. Gemini is the default provider (`LLM_PROVIDER=gemini`), so configure `GEMINI_API_KEY`. To use OpenAI instead, set `LLM_PROVIDER=openai` and configure `OPENAI_API_KEY`. The corresponding model settings are `GEMINI_MODEL` and `OPENAI_MODEL`. In production, set `APP_ENV=production` and replace `ADMIN_API_KEY` with a unique secret; app startup rejects an empty or example/default admin key before initializing the app. Keep your real `.env` file private; never commit API keys.
+
+If an existing Pinecone index has a different dimension from the configured embedding model, the app reports the mismatch and leaves the index untouched. Configure a compatible model or create a separate index and migrate documents manually.
 
 ```env
 LLM_PROVIDER=gemini
